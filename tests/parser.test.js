@@ -110,7 +110,7 @@ module.exports = {
       'figtree'
       //'FigTree Robot libwww-perl/5.04'
     );
-  },/*
+  },
   '5. User-Agent case sensivity': function () {
     testRobot([
         'User-agent: figtree',
@@ -127,5 +127,5 @@ module.exports = {
       ],
       'FigTree Robot libwww-perl/5.04'
     );
-  },*/
+  },
 };

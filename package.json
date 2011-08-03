@@ -1,0 +1,12 @@
+{
+  "name": "robotstxt",
+  "version": "0.2.0",
+  "description": "Parser for robots.txt",
+  "keywords": ["robots.txt", "robotstxt"],
+  "repository": "git://github.com/ekalinin/robotstxt.js.git",
+  "author": "Eugene Kalinin <e.v.kalinin@gmail.com>",
+  "devDependencies": {
+    "expresso": "0.8.1"
+  },
+  "main": "index"
+}

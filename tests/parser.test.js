@@ -128,4 +128,85 @@ module.exports = {
       'FigTree Robot libwww-perl/5.04'
     );
   },
+  '6. another escapes': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /tmp/',
+        'Disallow: /a%3Cd.html',
+        'Disallow: /a/b.html',
+        'Disallow: /%7ejoe/index.html'
+      ],
+      ['/tmp'],
+      [
+        '/tmp/','/tmp/a.html',
+        '/a%3cd.html','/a%3Cd.html',"/a/b.html",
+        '/%7Ejoe/index.html'
+      ]
+    );
+  },
+  // From bug report #523041
+  // Bug report says "/" should be denied, but that is not in the RFC
+  '7. bug report #523041': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /.'
+      ],
+      ['/foo.html'],
+      []
+    );
+  },
+  // From Google:
+  // http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=40364
+  '8. Googlebot': function () {
+    testRobot([
+        'User-agent: Googlebot',
+        'Allow: /folder1/myfile.html',
+        'Disallow: /folder1/'
+      ],
+      ['/folder1/myfile.html'],
+      ['/folder1/anotherfile.html'],
+      'Googlebot'
+    );
+  },
+  '9. ': function () {
+    ['Googlebot', 'Googlebot-Mobile'].forEach( function ( agent ) {
+      testRobot([
+          'User-agent: Googlebot',
+          'Disallow: /',
+          '',
+          'User-agent: Googlebot-Mobile',
+          'Allow: /'
+        ],
+        [],
+        ['/something.jpg'],
+        agent
+      );
+    })
+  },
+  '10. Get the order correct - 1': function () {
+    testRobot([
+        'User-agent: Googlebot-Mobile',
+        'Allow: /',
+        '',
+        'User-agent: Googlebot',
+        'Disallow: /'
+      ],
+      [],
+      ['/something.jpg'],
+      'Googlebot'
+    );
+  },
+  '11. Get the order correct - 2': function () {
+    testRobot([
+        'User-agent: Googlebot-Mobile',
+        'Allow: /',
+        '',
+        'User-agent: Googlebot',
+        'Disallow: /'
+      ],
+      ['/something.jpg'],
+      [],
+      'Googlebot-Mobile'
+    );
+  },
 };

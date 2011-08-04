@@ -23,7 +23,7 @@ Here's an example of using robots.js:
 
 Default crawler user-agent is:
 
-    User-Agent: Mozilla/5.0 (X11; Linux i686; rv:5.0) Gecko/20100101 Firefox/5.0
+    Mozilla/5.0 (X11; Linux i686; rv:5.0) Gecko/20100101 Firefox/5.0
 
 Here's an example of using another user-agent:
 

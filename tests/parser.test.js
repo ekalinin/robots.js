@@ -6,7 +6,8 @@
 
 var robots = require('../index')
   , assert = require('assert')
-  , util   = require('util');
+  , util   = require('util')
+  , ut     = require('../lib/utils');
 
 /**
  * Main testing function.
@@ -20,7 +21,7 @@ function testRobot (robotsText, goodUrls, badUrls, agent) {
   var agent = agent || 'test_robotparser'
     , parser = new robots.RobotsParser();
   parser.parse(robotsText);
-  //console.log(' ++ parser.entries: \n'+util.inspect(parser));
+  ut.d(' ++ parser.entries: \n'+util.inspect(parser, false, 3));
 
   for (var i = 0; i < goodUrls.length; i++) {
     testFetch(parser, goodUrls[i], true, agent);
@@ -207,6 +208,42 @@ module.exports = {
       ['/something.jpg'],
       [],
       'Googlebot-Mobile'
+    );
+  },
+  // Google also got the order wrong in #8.  You need to specify the
+  // URLs from more specific to more general.
+  '12. Get the order correct - 3': function () {
+    testRobot([
+        'User-agent: Googlebot',
+        'Allow: /folder1/myfile.html',
+        'Disallow: /folder1/'
+      ],
+      ['/folder1/myfile.html'],
+      ['/folder1/anotherfile.html'],
+      'Googlebot'
+    );
+  },
+  // For issue #6325 (query string support)
+  '13. query string support': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /some/path?name=value',
+      ],
+      ['/some/path'],
+      ['/some/path?name=value']
+    );
+  },
+  // For issue #4108 (obey first * entry)
+  '14. obey first * entry': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /some/path',
+        '',
+        'User-agent: *',
+        'Disallow: /another/path'
+      ],
+      ['/another/path'],
+      ['/some/path']
     );
   },
 };

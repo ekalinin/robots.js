@@ -1,9 +1,9 @@
 {
-  "name": "robotstxt",
-  "version": "0.3.0",
+  "name": "robots",
+  "version": "0.3.1",
   "description": "Parser for robots.txt",
-  "keywords": ["robots.txt", "robotstxt"],
-  "repository": "git://github.com/ekalinin/robotstxt.js.git",
+  "keywords": ["robots.txt", "robotstxt", "parser"],
+  "repository": "git://github.com/ekalinin/robots.js.git",
   "author": "Eugene Kalinin <e.v.kalinin@gmail.com>",
   "devDependencies": {
     "expresso": "0.8.1"

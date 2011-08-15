@@ -1,5 +1,5 @@
 /*!
- * Sitemap
+ * Robots
  * Copyright(c) 2011 Eugene Kalinin
  * MIT Licensed
  */

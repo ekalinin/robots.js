@@ -1,6 +1,6 @@
 {
   "name": "robots",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Parser for robots.txt",
   "keywords": ["robots.txt", "robotstxt", "parser"],
   "homepage": "https://github.com/ekalinin/robots.js",
@@ -9,5 +9,12 @@
   "devDependencies": {
     "expresso": "0.8.1"
   },
-  "main": "index"
+  "main": "index",
+  "bugs": {
+      "web": "https://github.com/ekalinin/robots.js/issues"
+  },
+  "licenses": {
+      "type": "MIT",
+      "url": "https://github.com/ekalinin/robots.js/blob/master/LICENSE"
+  }
 }

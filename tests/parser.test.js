@@ -48,8 +48,14 @@ function testFetch (parser, url, isGood, agent) {
       url = url[1];
     }
 
-    assert.eql( parser.canFetch(agent, url), isGood,
-        'URL must be '+debug_str+': '+url+', User-Agent: '+agent);
+    // Sync Test
+    assert.eql( parser.canFetchSync(agent, url), isGood,
+        'URL must be '+debug_str+': '+url+', User-Agent: '+agent+', [sync]');
+    // Async Test
+    parser.canFetch(agent, url, function (access, url, reason) {
+      assert.eql(access, isGood, 'URL must be '+debug_str+': '+url+
+                                              ', User-Agent: '+agent+', [async]');
+    });
 }
 
 /**

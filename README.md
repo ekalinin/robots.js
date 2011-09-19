@@ -57,7 +57,6 @@ parse and answer questions about a single robots.txt file.
   * **parse(lines)** — parse the input lines from a robots.txt file
   * **canFetch(userAgent, url, callback)** — using the parsed robots.txt decide if
     userAgent can fetch url. Callback function:
-
     ``function callback(access, url, reason) { ... }``
     where:
     * *access* — can this url be fetched. true/false.

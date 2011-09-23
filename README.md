@@ -51,8 +51,11 @@ API
 RobotsParser — main class. This class provides a set of methods to read,
 parse and answer questions about a single robots.txt file.
 
-  * **setUrl(url, read, after_parse)** — sets the URL referring to a robots.txt file.
-    By default, invokes read() method.
+  * **setUrl(url, read)** — sets the URL referring to a robots.txt file.
+    by default, invokes read() method.
+    If read is a function, it is called once the remote file is downloaded and parsed, and it
+      takes in two arguments: the first is the parser itself, and the second is a boolean 
+      which is True if the the remote file was successfully parsed.
   * **read(after_parse)** — reads the robots.txt URL and feeds it to the parser
   * **parse(lines)** — parse the input lines from a robots.txt file
   * **canFetch(userAgent, url, callback)** — using the parsed robots.txt decide if

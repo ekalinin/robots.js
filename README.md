@@ -18,12 +18,15 @@ Here's an example of using robots.js:
     var robots = require('robots')
       , parser = new robots.RobotsParser();
 
-    parser.setUrl('http://nodeguide.ru/robots.txt');
-    parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access) {
-      if (access) {
-        // parse url
+    parser.setUrl('http://nodeguide.ru/robots.txt', function(parser, success) {
+      if(success) {
+        parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access) {
+          if (access) {
+            // parse url
+          }
+        });
       }
-    });
+    });    
 
 Default crawler user-agent is:
 
@@ -34,15 +37,19 @@ Here's an example of using another user-agent and more detailed callback:
     var robots = require('robots')
       , parser = new robots.RobotsParser(
                     'http://nodeguide.ru/robots.txt',
-                    'Mozilla/5.0 (compatible; RobotTxtBot/1.0)'
+                    'Mozilla/5.0 (compatible; RobotTxtBot/1.0)',
+                    after_parse
                 );
-    parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access, url, reason) {
-      if (access) {
-        console.log(' url: '+url+', access: '+access);
-        // parse url ...
+    function after_parse(parser, success) {
+      if(success) {
+        parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access, url, reason) {
+          if (access) {
+            console.log(' url: '+url+', access: '+access);
+            // parse url ...
+          }
+        });
       }
-    });
-
+    }
 
 
 API

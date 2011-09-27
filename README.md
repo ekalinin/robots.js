@@ -18,12 +18,15 @@ Here's an example of using robots.js:
     var robots = require('robots')
       , parser = new robots.RobotsParser();
 
-    parser.setUrl('http://nodeguide.ru/robots.txt');
-    parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access) {
-      if (access) {
-        // parse url
+    parser.setUrl('http://nodeguide.ru/robots.txt', function(parser, success) {
+      if(success) {
+        parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access) {
+          if (access) {
+            // parse url
+          }
+        });
       }
-    });
+    });    
 
 Default crawler user-agent is:
 
@@ -34,15 +37,19 @@ Here's an example of using another user-agent and more detailed callback:
     var robots = require('robots')
       , parser = new robots.RobotsParser(
                     'http://nodeguide.ru/robots.txt',
-                    'Mozilla/5.0 (compatible; RobotTxtBot/1.0)'
+                    'Mozilla/5.0 (compatible; RobotTxtBot/1.0)',
+                    after_parse
                 );
-    parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access, url, reason) {
-      if (access) {
-        console.log(' url: '+url+', access: '+access);
-        // parse url ...
+    function after_parse(parser, success) {
+      if(success) {
+        parser.canFetch('*', '/doc/dailyjs-nodepad/', function (access, url, reason) {
+          if (access) {
+            console.log(' url: '+url+', access: '+access);
+            // parse url ...
+          }
+        });
       }
-    });
-
+    }
 
 
 API
@@ -52,12 +59,14 @@ RobotsParser — main class. This class provides a set of methods to read,
 parse and answer questions about a single robots.txt file.
 
   * **setUrl(url, read)** — sets the URL referring to a robots.txt file.
-    By default, invokes read() method.
-  * **read()** — reads the robots.txt URL and feeds it to the parser
+    by default, invokes read() method.
+    If read is a function, it is called once the remote file is downloaded and parsed, and it
+      takes in two arguments: the first is the parser itself, and the second is a boolean 
+      which is True if the the remote file was successfully parsed.
+  * **read(after_parse)** — reads the robots.txt URL and feeds it to the parser
   * **parse(lines)** — parse the input lines from a robots.txt file
   * **canFetch(userAgent, url, callback)** — using the parsed robots.txt decide if
     userAgent can fetch url. Callback function:
-
     ``function callback(access, url, reason) { ... }``
     where:
     * *access* — can this url be fetched. true/false.

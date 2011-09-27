@@ -1,6 +1,6 @@
 {
   "name": "robots",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Parser for robots.txt",
   "keywords": ["robots.txt", "robotstxt", "parser"],
   "homepage": "https://github.com/ekalinin/robots.js",
@@ -13,8 +13,7 @@
   "bugs": {
       "web": "https://github.com/ekalinin/robots.js/issues"
   },
-  "licenses": {
-      "type": "MIT",
-      "url": "https://github.com/ekalinin/robots.js/blob/master/LICENSE"
-  }
+  "licenses": [{
+      "type": "MIT"
+  }]
 }

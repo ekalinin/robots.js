@@ -252,4 +252,24 @@ module.exports = {
       ['/some/path']
     );
   },
+  '15. support globing inside allow/disallow': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /*.php$',
+        'Allow: /fish*'
+        ],
+        ['/fish', '/fish.html', '/fish/salmon.html', '/fish.htm?id=anything'],
+        ['/filename.php', '/folder/filename.php']
+    );
+  },
+  '16. globing images': function () {
+    testRobot([
+        'User-agent: *',
+        'Disallow: /*.jpg$',
+        'Allow: /'
+        ],
+        ['/fish', '/fish.html', '/fish/salmon.html', '/fish.htm?id=anything'],
+        ['/miki.jpg', '/maus.jpg']
+    );
+  },
 };

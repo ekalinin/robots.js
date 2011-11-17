@@ -7,6 +7,7 @@
 var robots = require('../index')
   , assert = require('assert')
   , util   = require('util')
+  , rule   = require('../lib/rule')
   , ut     = require('../lib/utils');
 
 /**
@@ -56,6 +57,20 @@ function testFetch (parser, url, isGood, agent) {
       assert.eql(access, isGood, 'URL must be '+debug_str+': '+url+
                                               ', User-Agent: '+agent+', [async]');
     });
+}
+
+/**
+ * Tests does_rule_fit_path function in Rule
+ * @param {String} the_rule A rule which might appear in robots.txt
+ * @param {String} path A url path to check against the_rule
+ * @param {Boolean} pass Does the_rule match the given path
+ */
+function testMatching(the_rule, path, pass) {
+  return function() {
+    r = new rule.Rule('', '');
+    // does_rule_fit_path is a static method
+    assert.eql(r.does_rule_fit_path(the_rule, path), pass);
+  };
 }
 
 /**
@@ -252,4 +267,61 @@ module.exports = {
       ['/some/path']
     );
   },
+  '15. Test asterisk mid rule': function() {
+    testRobot([
+      'User-Agent: *',
+      'Disallow: /a/*.json',
+      'Allow: /a/',
+      'Allow: /b/*.html',
+      'Disallow: /b/'
+    ],
+          ['/a/page.html', '/b/book.html'],
+          ['/a/page.json', '/b/book.php']
+         );
+  },
+  "Rule Matching 1: '/tmp', '/tmp', true":
+    testMatching('/tmp', '/tmp', true),
+  "Rule Matching 2: '/tmp', '/tmp/file', true":
+    testMatching('/tmp', '/tmp/file', true),
+  "Rule Matching 3: '/tmp', '/tmp/dir/file', true":
+    testMatching('/tmp', '/tmp/dir/file', true),
+  "Rule Matching 4: '/tmp*', '/tmp', true":
+    testMatching('/tmp*', '/tmp', true),
+  "Rule Matching 5: '/tmp*', '/tmp/file', true":
+    testMatching('/tmp*', '/tmp/file', true),
+  "Rule Matching 6: '/tmp*', '/tmp/dir/file', true":
+    testMatching('/tmp*', '/tmp/dir/file', true),
+  "Rule Matching 7: '/tmp/*', '/tmp', false":
+    testMatching('/tmp/*', '/tmp', false),
+  "Rule Matching 8: '/tmp/*', '/tmp/file', true":
+    testMatching('/tmp/*', '/tmp/file', true),
+  "Rule Matching 9: '/tmp/*', '/tmp/dir/file', true":
+    testMatching('/tmp/*', '/tmp/dir/file', true),
+  "Rule Matching 10: '/*', '/tmp', true":
+    testMatching('/*', '/tmp', true),
+  "Rule Matching 11: '/r/*/search', '/r/boink/search', true":
+    testMatching('/r/*/search', '/r/boink/search', true),
+  "Rule Matching 12: '/r/*/search', '/r/boink/search/term', true":
+    testMatching('/r/*/search', '/r/boink/search/term', true),
+  "Rule Matching 13: '/r/*/search', '/r/search/boink', false":
+    testMatching('/r/*/search', '/r/search/boink', false),
+  "Rule Matching 14: '/*json', '/thing.php', false":
+    testMatching('/*json', '/thing.php', false),
+  "Rule Matching 15: '/feeds*json', '/thing.php', false":
+    testMatching('/feeds*json', '/thing.php', false),
+  "Rule Matching 16: '/a/*/b/*/c/*', '/a/1/b/2/c/3', true":
+    testMatching('/a/*/b/*/c/*', '/a/1/b/2/c/3', true),
+  "Rule Matching 17: '/a/*/b/*/c/', '/a/1/b/2/c/yeah', true":
+    testMatching('/a/*/b/*/c/', '/a/1/b/2/c/yeah', true),
+  "Rule Matching 18: '/calendar', '/calendar/blah', true":
+    testMatching('/calendar', '/calendar/blah', true),
+  "Rule Matching 19: '/calendar/*', '/calendar/blah', true":
+    testMatching('/calendar/*', '/calendar/blah', true),
+  "Rule Matching 20: '/*.json', '/whatever.json', true":
+    testMatching('/*.json', '/whatever.json', true),
+  "Rule Matching 21: '/CASEsensitive', '/casesensitive', false":
+    testMatching('/Case', '/case', false),
+  "Rule Matching 22: '/case', '/CASE', false":
+    testMatching('/case', '/CASE', false)
 };
+

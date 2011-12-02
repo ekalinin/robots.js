@@ -272,4 +272,16 @@ module.exports = {
         ['/miki.jpg', '/maus.jpg']
     );
   },
+  '17. Test asterisk mid rule': function() {
+    testRobot([
+          'User-Agent: *',
+          'Disallow: /a/*.json',
+          'Allow: /a/',
+          'Allow: /b/*.html',
+          'Disallow: /b/'
+          ],
+          ['/a/page.html', '/b/book.html'],
+          ['/a/page.json', '/b/book.php']
+    );
+  },
 };

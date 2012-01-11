@@ -106,9 +106,12 @@ module.exports = {
         'Disallow: /tmp',
         'Disallow: /a%3cd.html',
         'Disallow: /a%2fb.html',
-        'Disallow: /%7ejoe/index.html'
+        'Disallow: /%7ejoe/index.html',
+        'Disallow: /wiki/Wikipedia%3Mediation_Committee', // malformed path, so it's ignored
+        'Allow: /wiki/*'
       ],
-      [],
+      [ '/wiki/Wikipedia%3Mediation_Committee'
+      ],
       [
         '/tmp','/tmp.html','/tmp/a.html',
         '/a%3cd.html','/a%3Cd.html','/a%2fb.html',

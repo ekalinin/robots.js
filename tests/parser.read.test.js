@@ -25,9 +25,9 @@ function mock_request(data) {
     request.end = function() {}
 
     // Make sure host is what is expected
-    assert.ok(data.host in test_request_data,
-            "Got unexpected host: " + data.host)
-    site_test_data = test_request_data[data.host];
+    assert.ok(data.hostname in test_request_data,
+            "Got unexpected hostname: " + data.hostname)
+    site_test_data = test_request_data[data.hostname];
 
     // Convert the data into url
     data.pathname = data.path;
@@ -82,7 +82,7 @@ robots.http = mock_http;
  * @param {Object}  test_map        Expected results data
  */
 function testRead(test_url, request_map, test_map) {
-    var test_site = url.parse(test_url).host;
+    var test_site = url.parse(test_url).hostname;
     test_request_data[test_site] = request_map;
 
     parser = new robots.RobotsParser(test_url, 'testing', function(p, success) {
@@ -252,6 +252,26 @@ module.exports = {
             'allowed': true,
         }
     );
-  }
+  },
+  '9. Test port in redirect': function() {
+    testRead(
+        'http://testsite9.com/robots.txt',
+        {
+            'http://testsite9.com/robots.txt': {
+                'statusCode': 302,
+                'headers': { 'location': 'http://testsite9.com:8080/redirect.txt' }
+            },
+            'http://testsite9.com:8080/redirect.txt': {
+                'statusCode': 200,
+                'chunks': default_chunks
+            }
+        },
+        {
+            'success': true,
+            'disallowed': false,
+            'allowed': true,
+        }
+    );
+  },
 }
 

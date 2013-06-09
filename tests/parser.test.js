@@ -287,4 +287,25 @@ module.exports = {
           ['/a/page.json', '/b/book.php']
     );
   },
+  '18. Test sitemaps': function() {
+    var parser = new robots.RobotsParser()
+      , test_sitemap = [
+          'http://test-server1.com/sitemap-1.xml',
+          'http://test-server1.com/sitemap-2.xml'
+        ]
+      , test_robots_txt = [
+        'User-Agent: *',
+        'Disallow: /a/*.json',
+        'Allow: /a/',
+        'Allow: /b/*.html',
+        'Disallow: /b/',
+        'Sitemap: '+test_sitemap[0],
+        'Sitemap: '+test_sitemap[1]
+      ];
+    parser.parse(test_robots_txt).getSitemaps(function(get_sitemaps){
+      assert.eql(get_sitemaps, test_sitemap, 'Incorrect sitemaps: '+
+                                              test_sitemap+', got: '+
+                                              get_sitemaps);
+    });
+  },
 };

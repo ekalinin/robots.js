@@ -1,7 +1,14 @@
-.PHONY: deploy deploy-github deploy-npm test
+.PHONY: env deploy deploy-github deploy-npm test
+
+env:
+	@virtualenv env				&& \
+		. env/bin/activate		&& \
+		pip install nodeenv		&& \
+		nodeenv -p				&& \
+		npm install
 
 test:
-	@expresso tests/*
+	@node_modules/expresso/bin/expresso tests/*
 
 deploy-github:
 	@git tag `grep "version" package.json | grep -o -E '[0-9]\.[0-9]\.[0-9]{1,2}'`

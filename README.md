@@ -51,6 +51,18 @@ Here's an example of using another user-agent and more detailed callback:
       }
     }
 
+Here's an example of getting list of sitemaps:
+
+    var robots = require('robots')
+      , parser = new robots.RobotsParser();
+
+    parser.setUrl('http://nodeguide.ru/robots.txt', function(parser, success) {
+      if(success) {
+        parser.getSitemaps(function(sitemaps) {
+          // sitemaps — array
+        });
+      }
+    });
 
 API
 ---
@@ -77,6 +89,7 @@ parse and answer questions about a single robots.txt file.
       * statusCode — http response status code for url. Only for type 'statusCode'
   * **canFetchSync(userAgent, url)** — using the parsed robots.txt decide if
     userAgent can fetch url. Return true/false.
+  * **getSitemaps(sitemaps)** — gets Sitemaps from parsed robots.txt
 
 License
 -------

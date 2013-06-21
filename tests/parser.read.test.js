@@ -41,6 +41,7 @@ function mock_request(data) {
 
     var response = new EventEmitter();
     response.setEncoding = function() {};
+    response.resume = function() {};
 
     ut.extend(response, url_data);
 

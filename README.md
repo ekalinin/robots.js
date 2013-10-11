@@ -64,6 +64,32 @@ Here's an example of getting list of sitemaps:
       }
     });
 
+Here's an example of getCrawlDelay usage:
+
+```javascript
+    var robots = require('robots')
+      , parser = new robots.RobotsParser();
+
+    // for example:
+    //
+    // $ curl -s http://nodeguide.ru/robots.txt
+    //
+    // User-agent: Google-bot
+    // Disallow: / 
+    // Crawl-delay: 2
+    //
+    // User-agent: *
+    // Disallow: /
+    // Crawl-delay: 2
+
+    parser.setUrl('http://nodeguide.ru/robots.txt', function(parser, success) {
+      if(success) {
+        var GoogleBotDelay = parser.getCrawlDelay("Google-bot");
+        // ...
+      }
+    });
+```
+
 API
 ---
 
@@ -89,6 +115,7 @@ parse and answer questions about a single robots.txt file.
       * statusCode — http response status code for url. Only for type 'statusCode'
   * **canFetchSync(userAgent, url)** — using the parsed robots.txt decide if
     userAgent can fetch url. Return true/false.
+  * **getCrawlDelay(userAgent)** — returns Crawl-delay for the certain userAgent
   * **getSitemaps(sitemaps)** — gets Sitemaps from parsed robots.txt
 
 License

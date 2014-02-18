@@ -99,6 +99,23 @@ Here's an example of getCrawlDelay usage:
     });
 ```
 
+An example of passing options to the HTTP request:
+
+```javascript
+var options = {
+  headers:{
+    Authorization:"Basic " + new Buffer("username:password").toString("base64")}
+}
+
+var robots = require('robots')
+  , parser = new robots.RobotsParser(null, options);
+
+parser.setUrl('http://nodeguide.ru/robots.txt', function(parser, success) {
+  ...
+});
+```
+
+
 API
 ---
 

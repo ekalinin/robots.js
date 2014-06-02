@@ -1,6 +1,6 @@
 {
   "name": "robots",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Parser for robots.txt",
   "keywords": ["robots.txt", "robotstxt", "parser"],
   "homepage": "https://github.com/ekalinin/robots.js",

@@ -274,5 +274,49 @@ module.exports = {
         }
     );
   },
+  '10. Test compound redirect': function() {
+    testRead(
+        'http://testsite10.com/robots.txt',
+        {
+            'http://testsite10.com/robots.txt': {
+                'statusCode': 301,
+                'headers': { 'location': 'http://testsite10.com/redirect1.txt' }
+            },
+            'http://testsite10.com/redirect1.txt': {
+                'statusCode': 302,
+                'headers': { 'location': 'http://testsite10.com/redirect2.txt' }
+            },
+            'http://testsite10.com/redirect2.txt': {
+                'statusCode': 200,
+                'chunks': default_chunks
+            }
+        },
+        {
+            'success': true,
+            'disallowed': false,
+            'allowed': true,
+        }
+    );
+  },
+  '11. Test infinite redirect (treat as 404)': function() {
+    testRead(
+        'http://testsite11.com/robots.txt',
+        {
+            'http://testsite11.com/robots.txt': {
+                'statusCode': 301,
+                'headers': { 'location': 'https://testsite11.com/robots.txt' }
+            },
+            'https://testsite11.com/robots.txt': {
+                'statusCode': 301,
+                'headers': { 'location': 'http://testsite11.com/robots.txt' }
+            }
+        },
+        {
+            'success': false,
+            'disallowed': true,
+            'allowed': true,
+        }
+    );
+  },
 }
 

@@ -143,6 +143,7 @@ parse and answer questions about a single robots.txt file.
     userAgent can fetch url. Return true/false.
   * **getCrawlDelay(userAgent)** — returns Crawl-delay for the certain userAgent
   * **getSitemaps(sitemaps)** — gets Sitemaps from parsed robots.txt
+  * **getDisallowedPaths(userAgent)** — gets paths explictly disallowed for the user agent specified AND *
 
 License
 -------

@@ -49,11 +49,11 @@ function testFetch (parser, url, isGood, agent) {
     }
 
     // Sync Test
-    assert.eql( parser.canFetchSync(agent, url), isGood,
+    assert.strictEqual( parser.canFetchSync(agent, url), isGood,
         'URL must be '+debug_str+': '+url+', User-Agent: '+agent+', [sync]');
     // Async Test
     parser.canFetch(agent, url, function (access, url, reason) {
-      assert.eql(access, isGood, 'URL must be '+debug_str+': '+url+
+      assert.strictEqual(access, isGood, 'URL must be '+debug_str+': '+url+
                                               ', User-Agent: '+agent+', [async]');
     });
 }
@@ -303,9 +303,54 @@ module.exports = {
         'Sitemap: '+test_sitemap[1]
       ];
     parser.parse(test_robots_txt).getSitemaps(function(get_sitemaps){
-      assert.eql(get_sitemaps, test_sitemap, 'Incorrect sitemaps: '+
+      assert.deepEqual(get_sitemaps, test_sitemap, 'Incorrect sitemaps: '+
                                               test_sitemap+', got: '+
                                               get_sitemaps);
     });
+  },
+  '19. get disallowed paths (user agent match)': function() {
+    var parser = new robots.RobotsParser()
+      , test_paths = [
+          '/c/',
+          '/a/*.json',
+          '/b/'
+        ]
+      , test_robots_txt = [
+        'User-Agent: *',
+        'Disallow: /a/*.json',
+        'Allow: /a/',
+        'Allow: /b/*.html',
+        'Disallow: /b/',
+        'User-Agent: test',
+        'Disallow: /c/',
+      ];
+
+    var disallowedPaths = parser.parse(test_robots_txt).getDisallowedPaths('test');
+
+    assert.deepEqual(disallowedPaths, test_paths, 'Incorrect paths: '+
+                                            test_paths+', got: '+
+                                            disallowedPaths);
+  },
+  '20. get disallowed paths (defaults only)': function() {
+    var parser = new robots.RobotsParser()
+      , test_paths = [
+          '/a/*.json',
+          '/b/'
+        ]
+      , test_robots_txt = [
+        'User-Agent: *',
+        'Disallow: /a/*.json',
+        'Allow: /a/',
+        'Allow: /b/*.html',
+        'Disallow: /b/',
+        'User-Agent: test',
+        'Disallow: /c/',
+      ];
+
+    var disallowedPaths = parser.parse(test_robots_txt).getDisallowedPaths('example');
+
+    assert.deepEqual(disallowedPaths, test_paths, 'Incorrect paths: '+
+                                            test_paths+', got: '+
+                                            disallowedPaths);
   },
 };

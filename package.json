@@ -2,21 +2,32 @@
   "name": "robots",
   "version": "0.10.1",
   "description": "Parser for robots.txt",
-  "keywords": ["robots.txt", "robotstxt", "parser"],
+  "keywords": [
+    "robots.txt",
+    "robotstxt",
+    "parser"
+  ],
   "homepage": "https://github.com/ekalinin/robots.js",
   "repository": "git://github.com/ekalinin/robots.js.git",
   "author": "Eugene Kalinin <e.v.kalinin@gmail.com>",
   "engines": {
     "node": ">= 0.6.0"
   },
+  "scripts": {
+    "test": "tsc"
+  },
   "devDependencies": {
-    "expresso": "0.8.1"
+    "@types/node": "^10.5.4",
+    "expresso": "0.8.1",
+    "typescript": "^2.9.2"
   },
   "main": "index",
   "bugs": {
-      "url": "https://github.com/ekalinin/robots.js/issues"
+    "url": "https://github.com/ekalinin/robots.js/issues"
   },
-  "licenses": [{
+  "licenses": [
+    {
       "type": "MIT"
-  }]
+    }
+  ]
 }

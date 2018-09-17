@@ -21,6 +21,8 @@
     "strictNullChecks": false,
 
     /* Additional Checks */
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+
+    "resolveJsonModule": true
   }
 }
